@@ -1,0 +1,65 @@
+<html>
+  <p>some text here</p>
+
+  <!-- adding a canvas element where the game will be displayed -->
+  <canvas id="gameCanvas" width="800" height="600"> </canvas>
+
+  <!-- script tag block is used run javascript, which is logic control flow code (functions and variables)-->
+  <script>
+    // variables
+    // note: if we declare our var inside of the function it would get forgotten when the function ends
+    var canvas;
+    var canvasContext;
+    var ballX = 50;
+
+    // functions
+    window.onload = function () {
+      canvas = document.getElementById("gameCanvas");
+      canvasContext = canvas.getContext("2d");
+
+      // Set Motion update frequency as frames per second
+      var framesPerSecond = 30;
+      setInterval(function () {
+        moveEverything();
+        drawEverything();
+      }, 1000 / framesPerSecond);
+    };
+
+    // Create function callBoth NOT USED
+    function callBoth() {
+      moveEverything();
+      drawEverything();
+    }
+
+    // Create function moveEverything
+    function moveEverything() {
+      ballX = ballX + 5;
+    }
+
+    // creating a function to group all draw code. N.B The order of shapes depends on what overlaps what
+    function drawEverything() {
+      // ---console.log(ballX);
+      // Create a linear gradient
+      // The start gradient point is at x=390, y=0
+      // The end gradient point is at x=430, y=0
+      var gradient = canvasContext.createLinearGradient(390, 0, 430, 0);
+
+      // Add three color stops
+      gradient.addColorStop(0, "green");
+      gradient.addColorStop(0.5, "cyan");
+      gradient.addColorStop(1, "green");
+
+      // Set the fill style and draw a rectangle
+      canvasContext.fillStyle = gradient;
+      canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Set white rectangle
+      canvasContext.fillStyle = "white";
+      canvasContext.fillRect(0, 210, 10, 100);
+
+      // Set black rectangle
+      canvasContext.fillStyle = "orange";
+      canvasContext.fillRect(ballX, 100, 10, 10);
+    }
+  </script>
+</html>
