@@ -15,7 +15,9 @@
     var ballSpeedY = 4;
 
     var paddle1Y = 250;
-    // cost is a constant variable that cannot change during the game
+    var paddle2Y = 250;
+    // cost is a constant variables that cannot change during the game
+    const PADDLE_THICKNESS = 10;
     const PADDLE_HEIGHT = 100;
 
     // FUNCTIONS
@@ -50,6 +52,13 @@
       });
     };
 
+    // Create function to reset the ball
+    function ballReset() {
+      ballSpeedX = -ballSpeedX;
+      ballX = canvas.width / 2;
+      ballY = canvas.height / 2;
+    }
+
     // Create function moveEverything to move ball at a variable distance
     function moveEverything() {
       ballX = ballX + ballSpeedX;
@@ -57,11 +66,27 @@
 
       // make the ball nounce back from the left
       if (ballX < 0) {
-        ballSpeedX = -ballSpeedX;
+        if (
+          ballY > paddle1Y && //below the top of the paddle AND   above the bottom of the paddle
+          ballY < paddle1Y + PADDLE_HEIGHT
+        ) {
+          ballSpeedX = -ballSpeedX; // flips the speed because it has to bounce off the paddle
+        } else {
+          // if the condition above is not true, reset the ball
+          ballReset();
+        }
       }
       // make the ball nounce back from the right
       if (ballX > canvas.width) {
-        ballSpeedX = -ballSpeedX;
+        if (
+          ballY > paddle2Y && //below the top of the paddle AND mabove the bottom of the paddle
+          ballY < paddle2Y + PADDLE_HEIGHT
+        ) {
+          ballSpeedX = -ballSpeedX; // flips the speed because it has to bounce off the paddle
+        } else {
+          // if the condition above is not true, reset the ball
+          ballReset();
+        }
       }
       // make the ball nounce back from the bottom
       if (ballY < 0) {
@@ -92,13 +117,20 @@
 
       // Set player's left paddle
       canvasContext.fillStyle = "white";
-      canvasContext.fillRect(0, paddle1Y, 10, PADDLE_HEIGHT);
+      canvasContext.fillRect(0, paddle1Y, PADDLE_THICKNESS, PADDLE_HEIGHT);
+
+      // Set right computer paddle
+      canvasContext.fillStyle = "white";
+      canvasContext.fillRect(
+        canvas.width - PADDLE_THICKNESS,
+        paddle2Y,
+        PADDLE_THICKNESS,
+        PADDLE_HEIGHT
+      );
 
       // Set oranga yellow, ball
       colorCircle(ballX, ballY, 10, "yellow");
     }
-    // Create functions for drawing the filled shapes NOT USED
-    //function colorRect(leftX, topY, width, height, drawColor) {}
 
     // create function for drawing ball
     function colorCircle(centerX, centerY, radius, drawColor) {
