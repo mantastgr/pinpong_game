@@ -16,6 +16,9 @@
 
     var player1Score = 0;
     var player2Score = 0;
+    const WINNING_SCORE = 3;
+
+    var showingWinScreen = false;
 
     var paddle1Y = 250;
     var paddle2Y = 250;
@@ -57,6 +60,12 @@
 
     // Create function to reset the ball
     function ballReset() {
+      if (player1Score >= WINNING_SCORE || player2Score >= WINNING_SCORE) {
+        // inspect if player 1 score is greater or equal to
+        player1Score = 0;
+        player2Score = 0;
+        showingWinScreen = true;
+      }
       ballSpeedX = -ballSpeedX;
       ballX = canvas.width / 2;
       ballY = canvas.height / 2;
@@ -74,6 +83,11 @@
 
     // Create function moveEverything to move ball at a variable distance
     function moveEverything() {
+      if (showingWinScreen) {
+        //stop the game if someone wins
+        return;
+      }
+
       computerMovement();
 
       ballX += ballSpeedX;
@@ -86,10 +100,12 @@
           ballY < paddle1Y + PADDLE_HEIGHT
         ) {
           ballSpeedX = -ballSpeedX; // flips the speed because it has to bounce off the paddle
+
+          var deltaY = ballY - (paddle1Y + PADDLE_HEIGHT / 2); // affecting the vertical speed of the ball
+          ballSpeedY = deltaY * 0.35;
         } else {
-          // if the condition above is not true, reset the ball
-          ballReset();
-          player2Score++; //give player 2 a score
+          player2Score++; //give player 2 a score. we base our decision whether to reset or not on the score
+          ballReset(); // if the condition above is not true, reset the ball
         }
       }
       // make the ball nounce back from the right
@@ -99,10 +115,12 @@
           ballY < paddle2Y + PADDLE_HEIGHT
         ) {
           ballSpeedX = -ballSpeedX; // flips the speed because it has to bounce off the paddle
+
+          var deltaY = ballY - (paddle2Y + PADDLE_HEIGHT / 2); // affecting the vertical speed of the ball
+          ballSpeedY = deltaY * 0.35;
         } else {
-          // if the condition above is not true, reset the ball
-          ballReset();
-          player1Score++; //give player 1 a score
+          player1Score++; //give player 1 a score. must be before ballReset()
+          ballReset(); // if the condition above is not true, reset the ball
         }
       }
       // make the ball nounce back from the bottom
@@ -131,6 +149,13 @@
       // Set the fill style and draw a rectangle
       canvasContext.fillStyle = gradient;
       canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+
+      if (showingWinScreen) {
+        canvasContext.fillStyle = "yellow";
+        canvasContext.fillText("click to continue", 100, 100);
+        //stop the game if someone wins
+        return;
+      }
 
       // Set player's left paddle
       canvasContext.fillStyle = "white";
