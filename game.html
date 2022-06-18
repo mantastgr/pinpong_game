@@ -68,13 +68,17 @@
       canvasContext.fillRect(0, 210, 10, 100);
 
       // Set oranga yellow, ball
-      canvasContext.fillStyle = "yellow";
-      canvasContext.beginPath();
-      canvasContext.arc(ballX, 50, 10, 0, Math.PI * 2, true);
-      canvasContext.fill();
+      colorCircle(ballX, 150, 10, "yellow");
+    }
+    // Create functions for drawing the filled shapes NOT USED
+    //function colorRect(leftX, topY, width, height, drawColor) {}
 
-      // Create functions for drawing the filled shapes NOT USED
-      //function colorRect(leftX, topY, width, height, drawColor) {}
+    // create function for drawing ball
+    function colorCircle(centerX, centerY, radius, drawColor) {
+      canvasContext.fillStyle = drawColor;
+      canvasContext.beginPath();
+      canvasContext.arc(centerX, centerY, radius, 0, Math.PI * 2, true);
+      canvasContext.fill();
     }
   </script>
 </html>
