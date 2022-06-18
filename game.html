@@ -11,6 +11,8 @@
     var canvas;
     var canvasContext;
     var ballX = 50;
+    // creating a variable to support speed changes
+    var ballSpeedX = 5;
 
     // functions
     window.onload = function () {
@@ -31,9 +33,11 @@
       drawEverything();
     }
 
-    // Create function moveEverything
+    // Create function moveEverything to move ball at a variable distance
     function moveEverything() {
-      ballX = ballX + 5;
+      ballX = ballX + ballSpeedX;
+      // at everty frame, it will increase by one the speed at twhich it's moving to the right
+      //ballSpeedX = ballSpeedX + 1;
     }
 
     // creating a function to group all draw code. N.B The order of shapes depends on what overlaps what
