@@ -1,6 +1,4 @@
 <html>
-  <p>some text here</p>
-
   <!-- adding a canvas element where the game will be displayed -->
   <canvas id="gameCanvas" width="800" height="600"> </canvas>
 
@@ -16,7 +14,24 @@
     var ballSpeedX = 10;
     var ballSpeedY = 4;
 
-    // functions
+    var paddle1Y = 250;
+    // cost is a constant variable that cannot change during the game
+    const PADDLE_HEIGHT = 100;
+
+    // FUNCTIONS
+
+    // function to track mouse. we have an event EVT fire everytime a mouse moves
+    function calculateMousePos(evt) {
+      var rect = canvas.getBoundingClientRect();
+      var root = document.documentElement;
+      var mouseX = evt.clientX - rect.left - root.scrollLeft;
+      var mouseY = evt.clientY - rect.top - root.scrollTop;
+      return {
+        x: mouseX,
+        y: mouseY,
+      };
+    }
+
     window.onload = function () {
       canvas = document.getElementById("gameCanvas");
       canvasContext = canvas.getContext("2d");
@@ -27,6 +42,12 @@
         moveEverything();
         drawEverything();
       }, 1000 / framesPerSecond);
+
+      // Set paddle's position value whenever it moves
+      canvas.addEventListener("mousemove", function (evt) {
+        var mousePos = calculateMousePos(evt);
+        paddle1Y = mousePos.y - PADDLE_HEIGHT / 2;
+      });
     };
 
     // Create function moveEverything to move ball at a variable distance
@@ -69,9 +90,9 @@
       canvasContext.fillStyle = gradient;
       canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Set white rectangle, paddle
+      // Set player's left paddle
       canvasContext.fillStyle = "white";
-      canvasContext.fillRect(0, 210, 10, 100);
+      canvasContext.fillRect(0, paddle1Y, 10, PADDLE_HEIGHT);
 
       // Set oranga yellow, ball
       colorCircle(ballX, ballY, 10, "yellow");
