@@ -59,6 +59,15 @@
       ballY = canvas.height / 2;
     }
 
+    // Creata function for computer movement
+    function computerMovement() {
+      if (paddle2Y < ballY) {
+        paddle2Y = paddle2Y + 6; //overwriting label, if above the ball
+      } else {
+        paddle2Y = paddle2Y - 6; //below the ball
+      }
+    }
+
     // Create function moveEverything to move ball at a variable distance
     function moveEverything() {
       ballX = ballX + ballSpeedX;
