@@ -40,6 +40,14 @@
       };
     }
 
+    function handleMouseClick(evt) {
+      if (showingWinScreen) {
+        player1Score = 0;
+        player2Score = 0;
+        showingWinScreen = false;
+      }
+    }
+
     window.onload = function () {
       canvas = document.getElementById("gameCanvas");
       canvasContext = canvas.getContext("2d");
@@ -50,6 +58,8 @@
         moveEverything();
         drawEverything();
       }, 1000 / framesPerSecond);
+
+      canvas.addEventListener("mousedown", handleMouseClick);
 
       // Set paddle's position value whenever it moves
       canvas.addEventListener("mousemove", function (evt) {
@@ -62,8 +72,8 @@
     function ballReset() {
       if (player1Score >= WINNING_SCORE || player2Score >= WINNING_SCORE) {
         // inspect if player 1 score is greater or equal to
-        player1Score = 0;
-        player2Score = 0;
+        //player1Score = 0;
+        //player2Score = 0;
         showingWinScreen = true;
       }
       ballSpeedX = -ballSpeedX;
@@ -133,13 +143,27 @@
       }
     }
 
+    // create a function to draw a net
+    function drawNet() {
+      for (var i = 0; i < canvas.height; i += 40) {
+        colorRect(canvas.width / 2 - 1, i, 2, 20, "white");
+      }
+    }
+
     // creating a function to group all draw code. N.B The order of shapes depends on what overlaps what
     function drawEverything() {
+      // next line blanks out the screen with black
+      colorRect(0, 0, canvas.width, canvas.height, "white");
       // ---console.log(ballX);
       // Create a linear gradient
       // The start gradient point is at x=390, y=0
       // The end gradient point is at x=430, y=0
-      var gradient = canvasContext.createLinearGradient(390, 0, 430, 0);
+      var gradient = canvasContext.createLinearGradient(
+        canvas.width / 2 - 30,
+        0,
+        430,
+        0
+      );
 
       // Add three color stops
       gradient.addColorStop(0, "green");
@@ -152,10 +176,19 @@
 
       if (showingWinScreen) {
         canvasContext.fillStyle = "yellow";
-        canvasContext.fillText("click to continue", 100, 100);
+
+        if (player1Score >= WINNING_SCORE) {
+          canvasContext.fillText("You won!", 350, 200);
+        } else if (player2Score >= WINNING_SCORE) {
+          canvasContext.fillText("Computer won!", 350, 200);
+        }
+
+        canvasContext.fillText("click to continue", 350, 500);
         //stop the game if someone wins
         return;
       }
+
+      drawNet();
 
       // Set player's left paddle
       canvasContext.fillStyle = "white";
@@ -184,6 +217,11 @@
       canvasContext.beginPath();
       canvasContext.arc(centerX, centerY, radius, 0, Math.PI * 2, true);
       canvasContext.fill();
+    }
+
+    function colorRect(leftX, topY, width, height, drawColor) {
+      canvasContext.fillStyle = drawColor;
+      canvasContext.fillRect(leftX, topY, width, height);
     }
   </script>
 </html>
