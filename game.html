@@ -20,7 +20,7 @@
       canvasContext = canvas.getContext("2d");
 
       // Set Motion update frequency as frames per second
-      var framesPerSecond = 30;
+      var framesPerSecond = 50;
       setInterval(function () {
         moveEverything();
         drawEverything();
@@ -63,15 +63,18 @@
       canvasContext.fillStyle = gradient;
       canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Set white rectangle
+      // Set white rectangle, paddle
       canvasContext.fillStyle = "white";
       canvasContext.fillRect(0, 210, 10, 100);
 
-      // Set black rectangle
-      canvasContext.fillStyle = "orange";
-      canvasContext.fillRect(ballX, 100, 10, 10);
+      // Set oranga yellow, ball
+      canvasContext.fillStyle = "yellow";
+      canvasContext.beginPath();
+      canvasContext.arc(ballX, 50, 10, 0, Math.PI * 2, true);
+      canvasContext.fill();
 
-      // Create functions for drawing the filled shapes
+      // Create functions for drawing the filled shapes NOT USED
+      //function colorRect(leftX, topY, width, height, drawColor) {}
     }
   </script>
 </html>
