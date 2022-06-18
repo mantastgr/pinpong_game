@@ -14,6 +14,9 @@
     var ballSpeedX = 10;
     var ballSpeedY = 4;
 
+    var player1Score = 0;
+    var player2Score = 0;
+
     var paddle1Y = 250;
     var paddle2Y = 250;
     // cost is a constant variables that cannot change during the game
@@ -61,17 +64,20 @@
 
     // Creata function for computer movement
     function computerMovement() {
-      if (paddle2Y < ballY) {
-        paddle2Y = paddle2Y + 6; //overwriting label, if above the ball
-      } else {
-        paddle2Y = paddle2Y - 6; //below the ball
+      var paddle2YCenter = paddle2Y + PADDLE_HEIGHT / 2;
+      if (paddle2YCenter < ballY - 35) {
+        paddle2Y += 6; //overwriting label, if above the ball. adds 6 and writes value again
+      } else if (paddle2YCenter > ballY + 35) {
+        paddle2Y -= 6; //below the ball
       }
     }
 
     // Create function moveEverything to move ball at a variable distance
     function moveEverything() {
-      ballX = ballX + ballSpeedX;
-      ballY = ballY + ballSpeedY;
+      computerMovement();
+
+      ballX += ballSpeedX;
+      ballY += ballSpeedY;
 
       // make the ball nounce back from the left
       if (ballX < 0) {
@@ -83,6 +89,7 @@
         } else {
           // if the condition above is not true, reset the ball
           ballReset();
+          player2Score++; //give player 2 a score
         }
       }
       // make the ball nounce back from the right
@@ -95,6 +102,7 @@
         } else {
           // if the condition above is not true, reset the ball
           ballReset();
+          player1Score++; //give player 1 a score
         }
       }
       // make the ball nounce back from the bottom
@@ -139,6 +147,10 @@
 
       // Set oranga yellow, ball
       colorCircle(ballX, ballY, 10, "yellow");
+
+      // display score
+      canvasContext.fillText(player1Score, 100, 100);
+      canvasContext.fillText(player2Score, canvas.width - 100, 100);
     }
 
     // create function for drawing ball
