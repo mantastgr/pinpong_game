@@ -36,8 +36,14 @@
     // Create function moveEverything to move ball at a variable distance
     function moveEverything() {
       ballX = ballX + ballSpeedX;
-      // at everty frame, it will increase by one the speed at twhich it's moving to the right
-      //ballSpeedX = ballSpeedX + 1;
+      // make the ball nounce back from the right
+      if (ballX > canvas.width) {
+        ballSpeedX = -ballSpeedX;
+      }
+      // make the ball nounce back from the left
+      if (ballX < 0) {
+        ballSpeedX = -ballSpeedX;
+      }
     }
 
     // creating a function to group all draw code. N.B The order of shapes depends on what overlaps what
@@ -64,6 +70,8 @@
       // Set black rectangle
       canvasContext.fillStyle = "orange";
       canvasContext.fillRect(ballX, 100, 10, 10);
+
+      // Create functions for drawing the filled shapes
     }
   </script>
 </html>
